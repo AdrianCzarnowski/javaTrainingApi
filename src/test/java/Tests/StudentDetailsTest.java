@@ -1,9 +1,12 @@
 package Tests;
 
+import dataStore.DataStore;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import model.Student;
 import org.junit.Test;
+
+import static io.restassured.RestAssured.given;
 
 public class StudentDetailsTest {
 
@@ -18,8 +21,7 @@ public class StudentDetailsTest {
 
     @Test
     public void shouldPostNewStudent() {
-        RestAssured
-                .given()
+        given()
                 .baseUri("https://thetestingworldapi.com")
                 .basePath("/api/studentsDetails")
                 .contentType(ContentType.JSON)
@@ -32,14 +34,14 @@ public class StudentDetailsTest {
                 .log()
                 .all();
     }
+
     Student student;
 
     @Test
     public void shouldPostNewStudentAsObject() {
         // specjalna klasa której zadaniem jest budowanie studenta
-        student = new Student("Salma", "Joanna","Hayek","10/01/1988");
-        RestAssured
-                .given()
+        student = new Student("Salma", "Joanna", "Hayek", "10/01/1988");
+        DataStore.studentId = given()
                 .baseUri("https://thetestingworldapi.com")
                 .basePath("/api/studentsDetails")
                 .header("Age", 30)
@@ -51,16 +53,32 @@ public class StudentDetailsTest {
                 .then()
                 .statusCode(201)
                 .log()
-                .all();
-    }
-    @Test
-    public void shouldGetNewStudent(){
-        //10093344 //10093375 //10093384
-        RestAssured
-                .given()
+                .all()
+                .extract()
+                .jsonPath()
+                .get("id");
+
+        given()
                 .baseUri("https://thetestingworldapi.com")
                 .basePath("/api/studentsDetails")
-                .pathParam("studentId", "10093344")
+                .pathParam("studentId", DataStore.studentId)
+                .contentType(ContentType.JSON)
+                .log()
+                .all()
+                .get("/{studentId}")
+                .then()
+                .statusCode(200)
+                .log()
+                .all();
+    }
+
+    @Test
+    public void shouldGetNewStudent() {
+        //10093344 //10093375 //10093384
+        given()
+                .baseUri("https://thetestingworldapi.com")
+                .basePath("/api/studentsDetails")
+                .pathParam("studentId", DataStore.studentId)
                 .contentType(ContentType.JSON)
                 .log()
                 .all()
@@ -72,15 +90,13 @@ public class StudentDetailsTest {
     }
 
 
-
     @Test
     public void shouldDeleteNewStudent() {
-        String studentId = "10093344";
-        RestAssured
-                .given()
+
+        given()
                 .baseUri("https://thetestingworldapi.com")
                 .basePath("/api/studentsDetails")
-                .pathParam("studentId", studentId)
+                .pathParam("studentId", DataStore.studentId)
                 .contentType(ContentType.JSON)
                 .log()
                 .all()
