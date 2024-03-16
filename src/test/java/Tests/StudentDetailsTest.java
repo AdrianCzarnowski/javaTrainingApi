@@ -2,7 +2,6 @@ package Tests;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
 import org.junit.Test;
 
 public class StudentDetailsTest {
