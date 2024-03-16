@@ -42,6 +42,7 @@ public class StudentDetailsTest {
                 .given()
                 .baseUri("https://thetestingworldapi.com")
                 .basePath("/api/studentsDetails")
+                .header("Age", 30)
                 .contentType(ContentType.JSON)
                 .log()
                 .all()
