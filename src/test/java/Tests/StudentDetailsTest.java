@@ -1,14 +1,18 @@
 package Tests;
 
 import dataStore.DataStore;
-import io.restassured.RestAssured;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import model.Student;
+import model.StudentResponse;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.given;
 
 public class StudentDetailsTest {
+    private static Logger logger = LoggerFactory.getLogger("StudentDetailsTest.class");
 
     String requestBody = """
                     {
@@ -89,7 +93,60 @@ public class StudentDetailsTest {
                 .all();
     }
 
+    @Test
+    public void shouldGetNewStudentAmdExtractAsTypeRef() {
+        //10093344 //10093375 //10093384
+        var actualStudent = given()
+                .baseUri("https://thetestingworldapi.com")
+                .basePath("/api/studentsDetails")
+                .pathParam("studentId", "10093375")
+                .contentType(ContentType.JSON)
+                .log()
+                .all()
+                .get("/{studentId}")
+//                .jsonPath()
+//                .getList(".", StudentResponse.class)
+//                .stream()
+//                .distinct()
+//                .collect(Collectors.toList());
+                .then()
+                .statusCode(200)
+                .log()
+                .all()
+                .extract()
+//                .as(StudentResponse.class);
+                .as(new TypeRef<StudentResponse>() {
+                });
+        logger.info("Extracted student: " + actualStudent);
 
+    }
+
+    @Test
+    public void shouldPostNewStudentAsObjectWithBuilder() {
+        student = Student
+                .builder()
+                .date_of_birth("22/02/1999")
+                .first_name("Kamila")
+                .middle_name("Agnieszka")
+                .last_name("Cabeyo")
+                .build();
+        DataStore.studentId = given()
+                .baseUri("https://thetestingworldapi.com")
+                .basePath("/api/studentsDetails")
+                .header("Age", 30)
+                .contentType(ContentType.JSON)
+                .log()
+                .all()
+                .body(student)
+                .post()
+                .then()
+                .statusCode(201)
+                .log()
+                .all()
+                .extract()
+                .jsonPath()
+                .get("id");
+    }
     @Test
     public void shouldDeleteNewStudent() {
 

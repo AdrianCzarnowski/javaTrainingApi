@@ -2,7 +2,6 @@ package Tests;
 
 import dataStore.DataStore;
 import io.restassured.RestAssured;
-
 import io.restassured.http.Cookies;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
 public class WeatherTest {
@@ -90,7 +90,7 @@ public class WeatherTest {
                 .log()
                 .all()
                 .body("wind.speed", is(4.1f))
-                .body("main.temp_min", is(279.15f));
+                .body("main.temp_min", equalTo(279.15f));
     }
 
     private Cookies shouldLoginToSystem() {
