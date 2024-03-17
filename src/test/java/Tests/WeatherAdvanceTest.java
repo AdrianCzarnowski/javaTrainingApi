@@ -13,7 +13,7 @@ import static io.restassured.RestAssured.given;
 public class WeatherAdvanceTest extends BaseTest {
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/xxx.csv")
+    @CsvFileSource(resources = "/cities.csv")
     @Tag("regression")
     @DisplayName("Check response with weather for selected city")
     public void shouldGetWeatherByCity(String city, String country, int id) {
