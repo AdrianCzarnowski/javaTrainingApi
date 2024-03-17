@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 
 import dataStore.DataStore;
 import io.restassured.common.mapper.TypeRef;

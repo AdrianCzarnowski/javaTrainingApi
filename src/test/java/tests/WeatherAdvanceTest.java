@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 
 import base.BaseTest;
 import org.junit.jupiter.api.DisplayName;
@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import static Specification.WeatherRequest.getWeatherRequestSpecification;
-import static Specification.WeatherResponse.getWeatherResponseSpecification;
 import static io.restassured.RestAssured.given;
+import static specifications.WeatherRequest.getWeatherRequestSpecification;
+import static specifications.WeatherResponse.getWeatherResponseSpecification;
 
 public class WeatherAdvanceTest extends BaseTest {
 

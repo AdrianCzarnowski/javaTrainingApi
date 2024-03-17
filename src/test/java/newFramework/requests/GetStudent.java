@@ -1,7 +1,6 @@
 package newFramework.requests;
 
 import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import newFramework.client.ExecutableRequest;
 
@@ -12,7 +11,6 @@ public class GetStudent implements ExecutableRequest {
 
     public GetStudent(String id, RequestSpecBuilder requestSpecBuilder) {
         this.requestSpecBuilder = requestSpecBuilder;
-        this.requestSpecBuilder.setContentType(ContentType.JSON);
         this.requestSpecBuilder.addPathParam("studentId", id);
     }
 

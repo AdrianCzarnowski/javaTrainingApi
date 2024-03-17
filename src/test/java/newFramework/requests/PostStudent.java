@@ -1,7 +1,7 @@
 package newFramework.requests;
 
+import dto.StudentDto;
 import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import model.Student;
 import newFramework.client.ExecutableRequest;
@@ -13,12 +13,18 @@ public class PostStudent implements ExecutableRequest {
 
     public PostStudent(Student student, RequestSpecBuilder requestSpecBuilder) {
         this.requestSpecBuilder = requestSpecBuilder;
-        this.requestSpecBuilder.setContentType(ContentType.JSON);
         this.requestSpecBuilder.setBody(student);
     }
 
     @Override
     public Response execute() {
-        return given().spec(requestSpecBuilder.build()).when().post("/api/studentsDetails");
+        return given()
+                .spec(requestSpecBuilder.build())
+                .when()
+                .post("/api/studentsDetails");
+    }
+
+    public StudentDto saveAsDto() {
+        return execute().then().extract().as(StudentDto.class);
     }
 }
